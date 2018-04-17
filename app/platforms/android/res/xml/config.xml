@@ -24,7 +24,7 @@
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
     </feature>
-    <name>Task list</name>
+    <name>YouTube Time Management</name>
     <description>
         YouTube Time Management
     </description>

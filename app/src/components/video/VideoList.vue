@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-toolbar
-            class="search-toolbar elevation-20"
+            class="search-toolbar elevation-8"
             color="white"
             dense
         >
@@ -10,7 +10,7 @@
 
         <v-card class="time-to-spend">
             <v-card-title primary-title>
-                <div class="headline">Time to expend daily (Minutes)</div>
+                <div class="headline">Time to spend daily (Minutes)</div>
                 <v-spacer></v-spacer>
                 <v-btn icon class="white--text" @click.native="showtimeToSpend = !showtimeToSpend">
                     <v-icon>{{ showtimeToSpend ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -55,7 +55,7 @@
                                 class="subheading"
                                 v-if="videoIndex == 0"
                             >
-                                <b>Dia {{posIndex}}</b>
+                                <b>Day {{posIndex}}</b>
                             </div>
                             <br>
                             {{video.snippet.title}} - {{video.contentDetails.duration}}
@@ -79,6 +79,9 @@
             </v-card-title>
             <v-slide-y-transition>
                 <v-card-text v-show="showMostUsedWords">
+                        <v-flex xs3 class="ma-1">
+                            <v-text-field class="white--text" label="Minimum number of characters" v-model="minimumNumberOfCaracters" :min="1" :max="100" type="number"></v-text-field>
+                        </v-flex>
                     <div class="center">
                         <v-chip class="white" v-for="word in mostUsedWords">{{word[0]}} ({{word[1]}})</v-chip>
                     </div>
@@ -151,7 +154,8 @@
                 showMostUsedWords: true,
                 result: null,
                 resultPerDay: null,
-                timeToSpend: [15,15,15,120,15,15,15],
+                timeToSpend: [15, 120, 30, 150, 20, 40, 90],
+                minimumNumberOfCaracters: 4,
 
                 dialog2: false,
                 menuDeadlineDate: false,
@@ -175,13 +179,16 @@
             },
             timeToSpend (newEntry, oldEntry){
                 this.searchVideos()
+            },
+            minimumNumberOfCaracters (n,o){
+                this.getMostUsedWords()
             }
         },
         methods: {
             searchVideos() {//fazer requisição de 4 paginas e junta-las
-                this.$http.get('search?part=id&maxResults=5&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(response => {
+                this.$http.get('search?part=id&maxResults=50&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(response => {
                     this.allItems = response.body
-                    this.headers[0].text = 'Approximately ' + this.allItems.pageInfo.totalResults + ' videos were found! Only the first 200 are being considered.'
+                    this.headers[0].text = 'Approximately ' + this.allItems.pageInfo.totalResults + ' videos were found! Only the first 50 are being considered.'
 
                     this.buildAllItemsIdsString()
 
@@ -229,7 +236,7 @@
                     let descriptionArray = description.split(" ");
 
                     for(var i = 0; i < titleArray.length; i++){
-                        if(titleArray[i].length < 3){
+                        if(titleArray[i].length < this.minimumNumberOfCaracters){
                             continue
                         }
 
@@ -241,7 +248,7 @@
                     }
 
                     for(var y = 0; y < descriptionArray.length; y++){
-                        if(descriptionArray[y].length < 3){
+                        if(descriptionArray[y].length < this.minimumNumberOfCaracters){
                             continue
                         }
 

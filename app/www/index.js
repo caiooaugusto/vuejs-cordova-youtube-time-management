@@ -54446,6 +54446,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -54463,7 +54466,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showMostUsedWords: true,
             result: null,
             resultPerDay: null,
-            timeToSpend: [15,15,15,120,15,15,15],
+            timeToSpend: [15, 120, 30, 150, 20, 40, 90],
+            minimumNumberOfCaracters: 4,
 
             dialog2: false,
             menuDeadlineDate: false,
@@ -54487,15 +54491,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         timeToSpend: function timeToSpend (newEntry, oldEntry){
             this.searchVideos()
+        },
+        minimumNumberOfCaracters: function minimumNumberOfCaracters (n,o){
+            this.getMostUsedWords()
         }
     },
     methods: {
         searchVideos: function searchVideos() {
             var this$1 = this;
 //fazer requisição de 4 paginas e junta-las
-            this.$http.get('search?part=id&maxResults=5&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(function (response) {
+            this.$http.get('search?part=id&maxResults=50&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(function (response) {
                 this$1.allItems = response.body
-                this$1.headers[0].text = 'Approximately ' + this$1.allItems.pageInfo.totalResults + ' videos were found! Only the first 200 are being considered.'
+                this$1.headers[0].text = 'Approximately ' + this$1.allItems.pageInfo.totalResults + ' videos were found! Only the first 50 are being considered.'
 
                 this$1.buildAllItemsIdsString()
 
@@ -54547,7 +54554,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var descriptionArray = description.split(" ");
 
                 for(var i = 0; i < titleArray.length; i++){
-                    if(titleArray[i].length < 3){
+                    if(titleArray[i].length < this$1.minimumNumberOfCaracters){
                         continue
                     }
 
@@ -54559,7 +54566,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 for(var y = 0; y < descriptionArray.length; y++){
-                    if(descriptionArray[y].length < 3){
+                    if(descriptionArray[y].length < this$1.minimumNumberOfCaracters){
                         continue
                     }
 
@@ -55228,7 +55235,7 @@ const Toggleable = factory()
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('v-toolbar', {
-    staticClass: "search-toolbar elevation-20",
+    staticClass: "search-toolbar elevation-8",
     attrs: {
       "color": "white",
       "dense": ""
@@ -55254,7 +55261,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "headline"
-  }, [_vm._v("Time to expend daily (Minutes)")]), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('v-btn', {
+  }, [_vm._v("Time to spend daily (Minutes)")]), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('v-btn', {
     staticClass: "white--text",
     attrs: {
       "icon": ""
@@ -55418,7 +55425,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('div', _vm._l((pos), function(video, videoIndex) {
       return _c('div', [(videoIndex == 0) ? _c('div', {
         staticClass: "subheading"
-      }, [_c('b', [_vm._v("Dia " + _vm._s(posIndex))])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v("\n                        " + _vm._s(video.snippet.title) + " - " + _vm._s(video.contentDetails.duration) + "\n                        "), _c('br'), _vm._v(" "), _c('img', {
+      }, [_c('b', [_vm._v("Day " + _vm._s(posIndex))])]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v("\n                        " + _vm._s(video.snippet.title) + " - " + _vm._s(video.contentDetails.duration) + "\n                        "), _c('br'), _vm._v(" "), _c('img', {
         attrs: {
           "src": video.snippet.thumbnails.default.url
         }
@@ -55449,13 +55456,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.showMostUsedWords),
       expression: "showMostUsedWords"
     }]
-  }, [_c('div', {
+  }, [_c('v-flex', {
+    staticClass: "ma-1",
+    attrs: {
+      "xs3": ""
+    }
+  }, [_c('v-text-field', {
+    staticClass: "white--text",
+    attrs: {
+      "label": "Minimum number of characters",
+      "min": 1,
+      "max": 100,
+      "type": "number"
+    },
+    model: {
+      value: (_vm.minimumNumberOfCaracters),
+      callback: function($$v) {
+        _vm.minimumNumberOfCaracters = $$v
+      },
+      expression: "minimumNumberOfCaracters"
+    }
+  })], 1), _vm._v(" "), _c('div', {
     staticClass: "center"
   }, _vm._l((_vm.mostUsedWords), function(word) {
     return _c('v-chip', {
       staticClass: "white"
     }, [_vm._v(_vm._s(word[0]) + " (" + _vm._s(word[1]) + ")")])
-  }))])], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.items.length > 0) ? _c('v-data-table', {
+  }))], 1)], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.items.length > 0) ? _c('v-data-table', {
     staticClass: "users-data-table elevation-1",
     attrs: {
       "dark": "",

@@ -1,0 +1,45 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-crosswalk-webview": {
+            "XWALK_VERSION": "23+",
+            "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+            "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+            "XWALK_MODE": "embedded",
+            "XWALK_MULTIPLEAPK": "true",
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.fisherbook.socialnetwork"
+        }
+    }
+}

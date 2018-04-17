@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.tasklist.test" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="FileTransfer">
+        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    <name>Task list</name>
+    <description>
+        Task list test
+    </description>
+    <author email="contato@bitwizard.net.br">
+        Bit Wizard - Caio Augusto Peixer da Silva
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="file://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <icon src="public/res/android/mipmap-xxxhdpi/icon.png" />
+    <allow-intent href="market:*" />
+    <icon density="ldpi" src="public/res/android/mipmap-ldpi/icon.png" />
+    <icon density="mdpi" src="public/res/android/mipmap-mdpi/icon.png" />
+    <icon density="hdpi" src="public/res/android/mipmap-hdpi/icon.png" />
+    <icon density="xhdpi" src="public/res/android/mipmap-xhdpi/icon.png" />
+    <icon density="xxhdpi" src="public/res/android/mipmap-xxhdpi/icon.png" />
+    <icon density="xxxhdpi" src="public/res/android/mipmap-xxxhdpi/icon.png" />
+    <splash density="port-ldpi" src="public/res/android/drawable-port-ldpi/screen.png" />
+    <splash density="port-mdpi" src="public/res/android/drawable-port-mdpi/screen.png" />
+    <splash density="port-hdpi" src="public/res/android/drawable-port-hdpi/screen.png" />
+    <splash density="port-xhdpi" src="public/res/android/drawable-port-xhdpi/screen.png" />
+    <splash density="port-xxhdpi" src="public/res/android/drawable-port-xxhdpi/screen.png" />
+    <splash density="port-xxxhdpi" src="public/res/android/drawable-port-xxxhdpi/screen.png" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="webView" value="org.crosswalk.engine.XWalkWebViewEngine" />
+    <preference name="xwalkVersion" value="23+" />
+    <preference name="xwalkLiteVersion" value="xwalk_core_library_canary:17+" />
+    <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
+    <preference name="xwalkMode" value="embedded" />
+    <preference name="xwalkMultipleApk" value="true" />
+    <preference name="loadUrlTimeoutValue" value="700000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="android-minSdkVersion" value="16" />
+    <preference name="orientation" value="portrait" />
+    <preference name="SplashScreenDelay" value="4000" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+</widget>

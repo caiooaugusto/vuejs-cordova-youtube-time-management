@@ -54091,7 +54091,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, ".toolbar-title[data-v-014803cd]{font-size:20px;font-weight:600}.toolbar-tasklist[data-v-014803cd]{z-index:1;top:0;position:fixed;display:flex;justify-content:center;align-items:center}.logo-toolbar[data-v-014803cd]{margin-top:-8px;width:300px!important}", ""]);
+exports.push([module.i, ".toolbar-title[data-v-014803cd]{font-size:20px;font-weight:600}.toolbar-tasklist[data-v-014803cd]{z-index:1;top:0;position:fixed;display:flex;justify-content:center;align-items:center;background-color:#d50000;color:#fff}.logo-toolbar[data-v-014803cd]{margin-top:-8px;width:300px!important}", ""]);
 
 // exports
 
@@ -54128,10 +54128,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('v-toolbar', {
-    staticClass: "toolbar-tasklist elevation-0",
-    attrs: {
-      "dark": ""
-    }
+    staticClass: "toolbar-tasklist elevation-0"
   }, [_c('div', {
     staticClass: "toolbar-title"
   }, [_vm._v("YouTube Time Management")])])
@@ -54646,13 +54643,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if(videoDuration > dayLimit || (limitPerDay + videoDuration) > dayLimit){
                         console.log('proximo dia')
                         //preenche a matriz
-                        //if(emptyDay) {
-                            for (var i = 0; i < result.length; i++) {
-                                //if (i != currentDayOfWeek) {
-                                    result[i].push(null)
-                                //}
-                            }
-                        //}
+                        /*for (var i = 0; i < result.length; i++) {
+                            result[i].push(null)
+                        }*/
+
 
                         //proximo video deve ser assistido no proximo dia
                         if(currentDayOfWeek == 6) { //se for o ultimo dia da semana, recomeça.
@@ -54701,6 +54695,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log('========starting currentCollumn======')
                 console.log(currentCollumn)
                 for (var i = 0; i < this$1.result.length; i++) {
+                    /*var emptyCollumn = true
+                    for (var t = 0; t < this.result.length; t++) {
+                        if (this.result[t][currentCollumn]){
+                            emptyCollumn = false
+                        }
+                    }
+
+                    if(emptyCollumn){
+                        console.log('coluna vazia!')
+                        currentCollumn++
+                        return buildResultPerDay(currentCollumn)
+                    }else{
+                        console.log('coluna NÃO vazia!')
+                    }*/
+
                     if (this$1.result[i][currentCollumn]) {
                         for (var x = currentCollumn; x < this$1.result[0].length; x++) {
 
@@ -54718,13 +54727,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 currentCollumn = x + 1
                                 return buildResultPerDay(currentCollumn)
                             }
-                        }
-                    }else{
-                        console.log('possivel coluna vazia')
-                        if(i == this$1.result.length-1){
-                            console.log('coluna vazia!')
-                            currentCollumn++
-                            //return buildResultPerDay(currentCollumn)
                         }
                     }
                 }

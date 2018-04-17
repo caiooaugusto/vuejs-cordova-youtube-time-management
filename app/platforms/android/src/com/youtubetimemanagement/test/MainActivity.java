@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.tasklist.test;
+package com.youtubetimemanagement.test;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

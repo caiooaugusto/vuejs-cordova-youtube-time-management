@@ -323,13 +323,10 @@
                         if(videoDuration > dayLimit || (limitPerDay + videoDuration) > dayLimit){
                             console.log('proximo dia')
                             //preenche a matriz
-                            //if(emptyDay) {
-                                for (var i = 0; i < result.length; i++) {
-                                    //if (i != currentDayOfWeek) {
-                                        result[i].push(null)
-                                    //}
-                                }
-                            //}
+                            /*for (var i = 0; i < result.length; i++) {
+                                result[i].push(null)
+                            }*/
+
 
                             //proximo video deve ser assistido no proximo dia
                             if(currentDayOfWeek == 6) { //se for o ultimo dia da semana, recomeça.
@@ -378,7 +375,7 @@
                     console.log('========starting currentCollumn======')
                     console.log(currentCollumn)
                     for (var i = 0; i < this.result.length; i++) {
-                        var emptyCollumn = true
+                        /*var emptyCollumn = true
                         for (var t = 0; t < this.result.length; t++) {
                             if (this.result[t][currentCollumn]){
                                 emptyCollumn = false
@@ -391,7 +388,7 @@
                             return buildResultPerDay(currentCollumn)
                         }else{
                             console.log('coluna NÃO vazia!')
-                        }
+                        }*/
 
                         if (this.result[i][currentCollumn]) {
                             for (var x = currentCollumn; x < this.result[0].length; x++) {

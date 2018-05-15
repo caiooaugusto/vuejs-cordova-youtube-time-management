@@ -12,7 +12,7 @@
             <v-card-title primary-title>
                 <div class="headline">Time to spend daily (Minutes)</div>
                 <v-spacer></v-spacer>
-                <v-btn icon class="white--text" @click.native="showtimeToSpend = !showtimeToSpend">
+                <v-btn icon @click.native="showtimeToSpend = !showtimeToSpend">
                     <v-icon>{{ showtimeToSpend ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
                 </v-btn>
             </v-card-title>
@@ -57,11 +57,11 @@
                             >
                                 <b>Day {{posIndex}}</b>
                             </div>
-                            <br>
-                            {{video.snippet.title}} - {{video.contentDetails.duration}}
-                            <br>
-                            <img :src="video.snippet.thumbnails.default.url">
-                            <br><br>
+                            <div>
+                                {{video.snippet.title}} - {{video.contentDetails.duration}}
+                                <br>
+                                <img :src="video.snippet.thumbnails.default.url">
+                            </div>
                         </div>
                     </div>
 
@@ -186,7 +186,7 @@
         },
         methods: {
             searchVideos() {//fazer requisição de 4 paginas e junta-las
-                this.$http.get('search?part=id&maxResults=50&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(response => {
+                this.$http.get('search?part=id&maxResults=10&type=video&q=' + this.search + '&key=AIzaSyC756WUk3Dfl2J2-Qt-4zrlYwwxtHvqPnk').then(response => {
                     this.allItems = response.body
                     this.headers[0].text = 'Approximately ' + this.allItems.pageInfo.totalResults + ' videos were found! Only the first 50 are being considered.'
 
@@ -309,17 +309,19 @@
                 maxTimeToSpend = timeToSpendInMinutes.reduce(function(a, b) {
                     return Math.max(a, b);
                 });
-                var result = [[],[],[],[],[],[],[]], currentResultRow = 0
+                var result = [[],[],[],[],[],[],[]]
                 var limitPerDay = 0, currentDayOfWeek = 0, currentVideoPosition = 0
+                var addEmptyDay = 0
 
                 var resolveVideosDays = () => {
                     //faz um laço começando do ultimo video processado
                     for(var x = currentVideoPosition; x < this.items.length; x++){
                         let dayLimit = timeToSpendInMinutes[currentDayOfWeek]
                         let videoDuration = this.formatVideoDurationToSeconds(this.items[x].contentDetails.duration) / 60
-
+                        console.log('================================')
                         //videos longer than max time to spend in a day will be ignored
                         if(maxTimeToSpend < videoDuration){
+                            console.log('este video foi ignorado!')
                             currentVideoPosition++
 
                             resolveVideosDays()
@@ -328,18 +330,19 @@
 
                         //se o proximo video for maior que limite de tempo do dia ou se o proximo video estourar o limite de tempo do dia
                         if(videoDuration > dayLimit || (limitPerDay + videoDuration) > dayLimit){
-                            console.log('proximo dia')
+                            console.log('limite do dia atingido: será feita uma tentativa de adicionar este video no proximo dia!')
                             //preenche a matriz
-                            /*for (var i = 0; i < result.length; i++) {
-                                result[i].push(null)
-                            }*/
-
+                            addEmptyDay++
+                            if(addEmptyDay > 1){
+                                //insere uma coluna vazia (dia vazio)
+                                for (var i = 0; i < result.length; i++) {
+                                    result[i].push(null)
+                                }
+                            }
 
                             //proximo video deve ser assistido no proximo dia
                             if(currentDayOfWeek == 6) { //se for o ultimo dia da semana, recomeça.
                                 currentDayOfWeek = 0
-                                //novos videos devem ser inseridos na proxima semana na matriz de resultados
-                                currentResultRow++
                             }else{
                                 currentDayOfWeek++
                             }
@@ -348,13 +351,23 @@
                             limitPerDay = 0
 
                             //salva posição do ultimo video analisado para recursão
-                            currentVideoPosition = x
+                            currentVideoPosition = x //talvez quando add dia vazio deva andar +1
+
+                            console.log('maxTimeToSpend To all videos ' + maxTimeToSpend)
+                            console.log('currentDayOfWeek ' + currentDayOfWeek+' | limitPerDay ' + limitPerDay)
+                            console.log('dayLimit ' + dayLimit)
+                            console.log('videoDuration')
+                            console.log(videoDuration)
+                            console.log('currentVideoPosition')
+                            console.log(currentVideoPosition)
+                            console.log('addEmptyDay')
+                            console.log(addEmptyDay)
+                            console.log('================================')
 
                             resolveVideosDays()
                             return
                         }
                         //alocar o video no mesmo dia
-                        //emptyDay = false
                         //soma a duração do video ao limite do dia
                         limitPerDay += videoDuration
 
@@ -365,8 +378,20 @@
                             }else{
                                 console.log('add video')
                                 result[i].push(this.items[x])
+                                addEmptyDay = 0
                             }
                         }
+
+                        console.log('maxTimeToSpend To all videos ' + maxTimeToSpend)
+                        console.log('currentDayOfWeek ' + currentDayOfWeek+' | limitPerDay ' + limitPerDay)
+                        console.log('dayLimit ' + dayLimit)
+                        console.log('videoDuration')
+                        console.log(videoDuration)
+                        console.log('currentVideoPosition')
+                        console.log(currentVideoPosition)
+                        console.log('addEmptyDay')
+                        console.log(addEmptyDay)
+                        console.log('================================')
                     }
                     return
                 }
@@ -376,26 +401,41 @@
 
                 var resultPerDay = []
                 var currentCollumn = 0
-                var dayCount = 1
+                var dayCount = 0
+                var emptyCollumn = true
+
+                var verifyEmptyCollumn = (currentCollumn) => {
+
+                }
 
                 var buildResultPerDay = (currentCollumn) => {
-                    console.log('========starting currentCollumn======')
-                    console.log(currentCollumn)
-                    for (var i = 0; i < this.result.length; i++) {
-                        /*var emptyCollumn = true
-                        for (var t = 0; t < this.result.length; t++) {
-                            if (this.result[t][currentCollumn]){
-                                emptyCollumn = false
-                            }
-                        }
+                    console.log('=========starting currentCollumn' + currentCollumn)
 
-                        if(emptyCollumn){
-                            console.log('coluna vazia!')
-                            currentCollumn++
-                            return buildResultPerDay(currentCollumn)
-                        }else{
-                            console.log('coluna NÃO vazia!')
-                        }*/
+                    //trata coluna vazia (dia vazio)
+                    /** var emptyCollumn = true
+                    for (var t = 0; t < this.result.length; t++) {
+                        if (this.result[t][currentCollumn]){
+                            emptyCollumn = false
+                        }
+                    }
+
+                    if(emptyCollumn){
+                        console.log('coluna vazia inicio!')
+                        if(!resultPerDay[dayCount]){
+                            resultPerDay[dayCount] = []
+                        }
+                        resultPerDay[dayCount].push([])
+                        dayCount++
+                        currentCollumn++
+
+                        console.log('pulando para coluna ' + currentCollumn)
+                        console.log('pulando para dia ' + dayCount)
+                    }
+                    */
+
+
+
+                    for (var i = 0; i < this.result.length; i++) {
 
                         if (this.result[i][currentCollumn]) {
                             for (var x = currentCollumn; x < this.result[0].length; x++) {
@@ -404,19 +444,45 @@
                                     if(!resultPerDay[dayCount]){
                                         resultPerDay[dayCount] = []
                                     }
+                                    emptyCollumn = false
+                                    console.log('--video adicionado ao dia ' +dayCount)
                                     resultPerDay[dayCount].push(this.result[i][x])
                                     if(!this.result[i][x+1]) {
                                         dayCount++
                                         currentCollumn = x+1
+                                        console.log('--pulando para proxima coluna ' +currentCollumn)
+                                        console.log('--pulando para proximo dia ' +dayCount)
+                                        console.log("---- recursivity now 1!")
                                         return buildResultPerDay(currentCollumn)
                                     }
                                 } else {
                                     currentCollumn = x + 1
+                                    console.log("---- recursivity now 2!")
                                     return buildResultPerDay(currentCollumn)
                                 }
                             }
+                        }else{
+                            if(i == this.result.length-1){
+                                emptyCollumn = true
+                                console.log('----collumn vazia')
+                                if(!resultPerDay[dayCount]){
+                                    resultPerDay[dayCount] = []
+                                }
+                                resultPerDay[dayCount].push([])
+                                dayCount++
+                                currentCollumn++
+
+                                console.log('pulando para coluna ' + currentCollumn)
+                                console.log('pulando para dia ' + dayCount)
+                                //return buildResultPerDay(currentCollumn)
+                                //}
+                            }
                         }
                     }
+                    //console.log('collumn vazia fim')
+                    //console.log('emptyCollumn fim')
+                    //console.log(emptyCollumn)
+                    //console.log("=============== end colloumn for ================")
                 }
 
                 buildResultPerDay(currentCollumn)
